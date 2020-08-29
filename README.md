@@ -1,6 +1,6 @@
-# movie_app
+# PopFlix
 
-A new Flutter project.
+If you love mvoies, PopFlix is for you ! PopFlix is currently developed using Flutter and The Movie Database API.
 
 ## Getting Started
 

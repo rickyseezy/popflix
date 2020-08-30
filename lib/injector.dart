@@ -7,6 +7,7 @@ import 'package:movie_app/ui/homepage/genderTabBar/upcoming_movies_cubit.dart';
 import 'package:movie_app/ui/homepage/slider/slider_cubit.dart';
 import 'package:movie_app/ui/homepage/topRatedMovies/top_rated_movies_cubit.dart';
 import 'package:movie_app/ui/homepage/trendingPersons/trending_persons_cubit.dart';
+import 'package:movie_app/widgets/detail_movie/detail_movie_cubit.dart';
 part 'injector.g.dart';
 
 abstract class Injector {
@@ -24,6 +25,7 @@ abstract class Injector {
     _configureUpcomingMoviesModule();
     _configureTrendingPersonsModule();
     _configureTopRatedMoviesModule();
+    _configureDetailMovieModule();
   }
 
   void _configureMoviesModule() {
@@ -50,6 +52,13 @@ abstract class Injector {
   void _configureTopRatedMoviesModule() {
     _configureTopRatedMoviesModuleFactories();
   }
+
+  void _configureDetailMovieModule() {
+    _configureDetailMovieModuleFactories();
+  }
+
+  @Register.factory(DetailMovieCubit)
+  void _configureDetailMovieModuleFactories();
 
   @Register.factory(MovieDataSource)
   @Register.factory(MovieRepository)

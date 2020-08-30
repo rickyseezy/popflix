@@ -23,7 +23,7 @@ class MovieList extends StatelessWidget {
             return GestureDetector(
               onTap: (){
                 print(movies[index].original_title);
-                context.navigator.push(Routes.detailVideo);
+                context.navigator.push(Routes.detailMovie);
               },
               child: Padding(
                 padding: const EdgeInsets.only(top: 10, left: 5.0, right: 5.0),

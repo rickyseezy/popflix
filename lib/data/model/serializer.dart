@@ -4,6 +4,7 @@ import 'package:built_value/serializer.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
+import 'package:movie_app/data/model/detailMovie/detail_movie.dart';
 import 'package:movie_app/data/model/genre/genre_item.dart';
 import 'package:movie_app/data/model/person/person.dart';
 import 'package:movie_app/data/model/popularMovies/popular_movies_response.dart';
@@ -24,7 +25,8 @@ part 'serializer.g.dart';
   UpcomingMoviesResponse,
   TrendingPersonsResponse,
   Person,
-  TopRatedMoviesResponse
+  TopRatedMoviesResponse,
+  DetailMovieResponse,
 ])
 final Serializers serializers =
     (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

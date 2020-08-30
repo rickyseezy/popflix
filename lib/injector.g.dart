@@ -7,6 +7,11 @@ part of 'injector.dart';
 // **************************************************************************
 
 class _$Injector extends Injector {
+  void _configureDetailMovieModuleFactories() {
+    final KiwiContainer container = KiwiContainer();
+    container.registerFactory((c) => DetailMovieCubit(c<MovieRepository>()));
+  }
+
   void _configureMoviesModuleFactories() {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => MovieDataSource(c<Client>()));

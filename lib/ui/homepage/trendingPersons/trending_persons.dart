@@ -4,6 +4,7 @@ import 'package:movie_app/themes/themes.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;
 import 'package:movie_app/ui/homepage/trendingPersons/trending_persons_cubit.dart';
 import 'package:movie_app/ui/homepage/trendingPersons/trending_persons_state.dart';
+import 'package:movie_app/widgets/avatar_list/avatar_list.dart';
 
 class TrendingPersons extends StatefulWidget {
   @override
@@ -64,33 +65,6 @@ class _TrendingPersonsState extends State<TrendingPersons> {
 
   Widget _onSuccess(BuildContext context, TrendingPersonsLoadedState state) {
     final persons = state.results.toList();
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.13,
-      child: ListView.builder(
-        itemBuilder: (builder, index) {
-          return Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              children: <Widget>[
-                Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                          image: NetworkImage(
-                              'https://image.tmdb.org/t/p/original/${persons[index].profile_path}'))),
-                ),
-                SizedBox(height: 10,),
-                Text(persons[index].name, style: TextStyle(fontSize: 10),)
-              ],
-            ),
-          );
-        },
-        itemCount: persons.length,
-        scrollDirection: Axis.horizontal,
-      ),
-    );
+    return AvatarList(persons);
   }
 }

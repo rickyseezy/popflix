@@ -38,10 +38,21 @@ class Router extends RouterBase {
       );
     },
     DetailMovie: (data) {
+      final args = data.getArgs<DetailMovieArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => DetailMovie(),
+        builder: (context) => DetailMovie(args.id),
         settings: data,
       );
     },
   };
+}
+
+/// ************************************************************************
+/// Arguments holder classes
+/// *************************************************************************
+
+/// DetailMovie arguments holder class
+class DetailMovieArguments {
+  final int id;
+  DetailMovieArguments({@required this.id});
 }

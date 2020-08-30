@@ -23,6 +23,7 @@ abstract class DetailMovieResponse implements Built<DetailMovieResponse, DetailM
   String get title;
   double get vote_average;
   int get vote_count;
+  int get runtime;
 
   DetailMovieResponse._();
   factory DetailMovieResponse([void Function(DetailMovieResponseBuilder) updates]) = _$DetailMovieResponse;

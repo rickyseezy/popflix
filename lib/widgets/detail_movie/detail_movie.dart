@@ -1,62 +1,204 @@
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:movie_app/data/model/detailMovie/detail_movie.dart';
 import 'package:movie_app/themes/themes.dart';
+import 'package:movie_app/widgets/detail_movie/detail_movie_cubit.dart';
+import 'package:movie_app/widgets/detail_movie/detail_movie_state.dart';
+import 'package:kiwi/kiwi.dart' as kiwi;
 
-class DetailMovie extends StatelessWidget {
+class DetailMovie extends StatefulWidget {
+  final int id;
+
+  DetailMovie(@required this.id);
+
+  @override
+  _DetailMovieState createState() => _DetailMovieState();
+}
+
+class _DetailMovieState extends State<DetailMovie> {
+  final _detailMovieCubit = kiwi.KiwiContainer().resolve<DetailMovieCubit>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _detailMovieCubit.loadMovie(widget.id);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            CustomHeader(),
-            Container(
-              color: Custom.mainColor,
-              child: Column(children: <Widget>[
-              SizedBox(
-                height: 15,
+    return BlocProvider(
+      create: (_) => _detailMovieCubit,
+      child: BlocBuilder<DetailMovieCubit, DetailMovieState>(
+        builder: (context, state) {
+          if (state is DetailMovieLoadingState) {
+            return Scaffold(
+                body: Container(
+              child: Center(
+                child: CircularProgressIndicator(),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Text(
-                  'OVERVIEW',
-                  style: TextStyle(color: Custom.titleColor, fontSize: 12),
+            ));
+          }
+
+          if (state is DetailMovieLoadedState) {
+            final DetailMovieResponse movie = state.result;
+            return Scaffold(
+              body: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[CustomHeader(state.result), Content(movie)],
                 ),
               ),
-              SizedBox(
-                height: 15,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Text(
-                  'An ex-soldier, a teen and a cop collide in New Orleans as they hunt for the source behind a dangerous new pill that grants users temporary superpowers.',
-                  style: TextStyle(fontSize: 11),
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-            ],),)
-          ],
-        ),
+            );
+          }
+
+          return Scaffold(
+              body: Container(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          ));
+        },
       ),
     );
   }
 }
 
+class Content extends StatelessWidget {
+  final DetailMovieResponse movie;
+
+  Content(this.movie);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Custom.mainColor,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              'OVERVIEW',
+              style: TextStyle(color: Custom.titleColor, fontSize: 12),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              movie.overview,
+              style: TextStyle(fontSize: 11),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                _buildItem(context,
+                    title: 'BUDGET',
+                    value: movie.budget.toString(),
+                    isPrice: true),
+                _buildItem(context,
+                    title: 'DURATION',
+                    value: '${movie.runtime.toString()}min',
+                    isPrice: false),
+                _buildItem(context,
+                    title: 'RELEASE DATE',
+                    value: movie.release_date,
+                    isPrice: false)
+              ],
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Text('GENRES',
+                style: TextStyle(color: Custom.titleColor, fontSize: 12)),
+            SizedBox(
+              height: 15,
+            ),
+            Wrap(children: _buildGenreTag(), spacing: 8,),
+            SizedBox(
+              height: 15,
+            ),
+            Text('CASTS',
+                style: TextStyle(color: Custom.titleColor, fontSize: 12)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _buildGenreTag() {
+    TextStyle style = TextStyle(fontSize: 8);
+    return movie.genres.map((m) {
+      return Container(
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.white),
+            borderRadius: BorderRadius.all(Radius.circular(4))),
+        child: Padding(
+          padding: const EdgeInsets.all(6.0),
+          child: Text(
+            m.name,
+            style: style,
+          ),
+        ),
+      );
+    }).toList();
+  }
+
+  Widget _buildItem(BuildContext ctx,
+      {String title, String value, bool isPrice}) {
+    TextStyle valueStyle = TextStyle(
+      color: Theme.of(ctx).accentColor,
+      fontWeight: FontWeight.bold,
+      fontSize: 12,
+    );
+    TextStyle titleStyle = TextStyle(
+        color: Custom.titleColor, fontWeight: FontWeight.bold, fontSize: 12);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          title,
+          style: titleStyle,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        isPrice
+            ? Text(
+                '$value\$',
+                style: valueStyle,
+              )
+            : Text(
+                '$value',
+                style: valueStyle,
+              )
+      ],
+    );
+  }
+}
+
 class CustomHeader extends StatelessWidget {
+  final DetailMovieResponse movie;
+
+  CustomHeader(this.movie);
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
         HeaderDetailMovie(
-          title: 'Project Power',
+          title: movie.title,
+          imagePath: movie.backdrop_path,
         ),
-        Positioned(
-            bottom: 0,
-            child: BottomContent()),
+        Positioned(bottom: 0, child: BottomContent(movie)),
         Positioned(
           child: CustomPlayIcon(),
           bottom: MediaQuery.of(context).size.height * 0.01,
@@ -68,6 +210,10 @@ class CustomHeader extends StatelessWidget {
 }
 
 class BottomContent extends StatelessWidget {
+  final DetailMovieResponse movie;
+
+  BottomContent(this.movie);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -81,7 +227,7 @@ class BottomContent extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 10),
-            child: RateBar(),
+            child: RateBar(movie),
           ),
         ],
       ),
@@ -90,13 +236,18 @@ class BottomContent extends StatelessWidget {
 }
 
 class RateBar extends StatelessWidget {
+  final DetailMovieResponse movie;
+
+  RateBar(this.movie);
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        Text('7.2'),
+        Text(movie.vote_average.toString()),
+        SizedBox(width: 10,),
         RatingBar(
-            initialRating: 5,
+            initialRating: movie.vote_average / 2,
             direction: Axis.horizontal,
             minRating: 1,
             allowHalfRating: true,
@@ -134,13 +285,15 @@ class CustomPlayIcon extends StatelessWidget {
 
 class HeaderDetailMovie extends StatelessWidget {
   final String title;
+  final String imagePath;
 
-  HeaderDetailMovie({@required this.title});
+  HeaderDetailMovie({@required this.title, @required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.03),
+      margin:
+          EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.03),
       child: Stack(
         children: <Widget>[
           Container(
@@ -149,19 +302,39 @@ class HeaderDetailMovie extends StatelessWidget {
                 image: DecorationImage(
                     fit: BoxFit.cover,
                     image: NetworkImage(
-                        'https://image.tmdb.org/t/p/original/qVygtf2vU15L2yKS4Ke44U4oMdD.jpg'))),
+                        'https://image.tmdb.org/t/p/original/$imagePath'))),
+          ),
+          Positioned(
+            bottom: 0,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.07,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [
+                      Custom.mainColor.withOpacity(1.0),
+                      Custom.mainColor.withOpacity(0.0),
+                    ],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    stops: [
+                      0.0,
+                      0.9,
+                    ]),
+              ),
+            ),
           ),
           Positioned.fill(
               child: Align(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: Text(
-                'Project Power',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-              ),
-            ),
-            alignment: Alignment.bottomCenter,
-          )),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 15),
+                  child: Text(
+                    title,
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                alignment: Alignment.bottomCenter,
+              )),
           Positioned(
             top: 58,
             left: 10,

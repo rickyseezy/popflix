@@ -14,7 +14,7 @@ class AvatarList extends StatelessWidget {
       child: ListView.builder(
         itemBuilder: (builder, index) {
           return Container(
-            width: 70,
+            width: 75,
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(

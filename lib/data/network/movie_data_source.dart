@@ -93,16 +93,10 @@ class MovieDataSource {
   }
 
   Future<SimilarMovieResponse> getSimilarMovies(int id) async {
-    try {
-      final response = await client.get('$_baseUrl/movie/$id/similar?api_key=$API_KEY');
-      final parsedResponse = SimilarMovieResponse.fromJson(response.body);
-      print(parsedResponse);
-      if(response.statusCode == 200) {
-        return parsedResponse;
-      }
-
-    } catch(e) {
-      print(e);
+    final response = await client.get('$_baseUrl/movie/$id/similar?api_key=$API_KEY');
+    final parsedResponse = SimilarMovieResponse.fromJson(response.body);
+    if(response.statusCode == 200) {
+      return parsedResponse;
     }
     throw MovieErrorException;
   }

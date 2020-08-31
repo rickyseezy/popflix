@@ -184,21 +184,20 @@ class _ContentState extends State<Content> {
               create: (_) => _similarMoviesCubit,
               child: BlocBuilder<SimilarMoviesCubit, SimilarMoviesState>(
                 builder: (context, state) {
-                  print(state);
                   if (state is SimilarMoviesLoadingState) {
                     return _onSimilarMovieLoading();
                   }
 
                   if (state is SimilarMoviesLoadedState) {
                     return Container(
-                      height: 400,
+                      height: 230,
                         child: MovieList(movies: state.videos.toList(), searchIndex: 0,));
                   }
 
                   if (state is SimilarMoviesErrorState) {
                     return Container(
                         height: 200,
-                        child: Center(child: Text('Oops, no similar movies has been found !'),));
+                        child: Center(child: Text('Oops, no similar movies has been found !', style: TextStyle(color: Custom.secondColor, fontWeight: FontWeight.bold),),));
                   }
                   return _onSimilarMovieLoading();
                 },
@@ -212,7 +211,7 @@ class _ContentState extends State<Content> {
 
   Widget _onSimilarMovieLoading() {
     return Container(
-      height: 400,
+      height: 200,
       child: Center(
         child: CircularProgressIndicator(),
       ),

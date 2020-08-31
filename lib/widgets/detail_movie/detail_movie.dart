@@ -6,10 +6,13 @@ import 'package:movie_app/data/model/detailMovie/detail_movie.dart';
 import 'package:movie_app/themes/themes.dart';
 import 'package:movie_app/ui/homepage/movie_credit/movie_credit_cubit.dart';
 import 'package:movie_app/ui/homepage/movie_credit/movie_credit_state.dart';
+import 'package:movie_app/ui/homepage/similar_movies/similar_movies_cubit.dart';
+import 'package:movie_app/ui/homepage/similar_movies/similar_movies_state.dart';
 import 'package:movie_app/widgets/avatar_list/avatar_list.dart';
 import 'package:movie_app/widgets/detail_movie/detail_movie_cubit.dart';
 import 'package:movie_app/widgets/detail_movie/detail_movie_state.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;
+import 'package:movie_app/widgets/movies_list.dart';
 
 class DetailMovie extends StatefulWidget {
   final int id;
@@ -28,7 +31,6 @@ class _DetailMovieState extends State<DetailMovie> {
     // TODO: implement initState
     super.initState();
     _detailMovieCubit.loadMovie(widget.id);
-    //_movieCreditCubit.loadCast(widget.id);
   }
 
   @override
@@ -49,9 +51,13 @@ class _DetailMovieState extends State<DetailMovie> {
           if (state is DetailMovieLoadedState) {
             final DetailMovieResponse movie = state.result;
             return Scaffold(
+              backgroundColor: Custom.mainColor,
               body: SingleChildScrollView(
                 child: Column(
-                  children: <Widget>[CustomHeader(state.result), Content(movie)],
+                  children: <Widget>[
+                    CustomHeader(state.result),
+                    Content(movie)
+                  ],
                 ),
               ),
             );
@@ -80,12 +86,17 @@ class Content extends StatefulWidget {
 
 class _ContentState extends State<Content> {
   final _movieCreditCubit = kiwi.KiwiContainer().resolve<MovieCreditCubit>();
+  final _similarMoviesCubit =
+      kiwi.KiwiContainer().resolve<SimilarMoviesCubit>();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _movieCreditCubit.loadCast(widget.movie.id);
+    _similarMoviesCubit.loadSimilarMovies(widget.movie.id);
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -93,6 +104,7 @@ class _ContentState extends State<Content> {
       child: Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
         child: Column(
+          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(
@@ -137,7 +149,10 @@ class _ContentState extends State<Content> {
             SizedBox(
               height: 15,
             ),
-            Wrap(children: _buildGenreTag(), spacing: 8,),
+            Wrap(
+              children: _buildGenreTag(),
+              spacing: 8,
+            ),
             SizedBox(
               height: 15,
             ),
@@ -147,16 +162,45 @@ class _ContentState extends State<Content> {
               create: (_) => _movieCreditCubit,
               child: BlocBuilder<MovieCreditCubit, MovieCreditState>(
                 builder: (context, state) {
-                  if(state is MovieCreditLoadingState){
+                  if (state is MovieCreditLoadingState) {
                     return _onLoading();
                   }
 
-                  if(state is MovieCreditLoadedState){
+                  if (state is MovieCreditLoadedState) {
                     print('is loaded');
                     return AvatarRoleList(state.cast.toList());
                   }
 
                   return _onLoading();
+                },
+              ),
+            ),
+            Text('SIMILAR MOVIES',
+                style: TextStyle(color: Custom.titleColor, fontSize: 12)),
+            SizedBox(
+              height: 15,
+            ),
+            BlocProvider(
+              create: (_) => _similarMoviesCubit,
+              child: BlocBuilder<SimilarMoviesCubit, SimilarMoviesState>(
+                builder: (context, state) {
+                  print(state);
+                  if (state is SimilarMoviesLoadingState) {
+                    return _onSimilarMovieLoading();
+                  }
+
+                  if (state is SimilarMoviesLoadedState) {
+                    return Container(
+                      height: 400,
+                        child: MovieList(movies: state.videos.toList(), searchIndex: 0,));
+                  }
+
+                  if (state is SimilarMoviesErrorState) {
+                    return Container(
+                        height: 200,
+                        child: Center(child: Text('Oops, no similar movies has been found !'),));
+                  }
+                  return _onSimilarMovieLoading();
                 },
               ),
             )
@@ -166,10 +210,22 @@ class _ContentState extends State<Content> {
     );
   }
 
+  Widget _onSimilarMovieLoading() {
+    return Container(
+      height: 400,
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
   Widget _onLoading() {
     return Container(
-        height: MediaQuery.of(context).size.height * 0.13,
-      child: Center(child: CircularProgressIndicator(),),);
+      height: MediaQuery.of(context).size.height * 0.13,
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
   }
 
   List<Widget> _buildGenreTag() {
@@ -284,7 +340,9 @@ class RateBar extends StatelessWidget {
     return Row(
       children: <Widget>[
         Text(movie.vote_average.toString()),
-        SizedBox(width: 10,),
+        SizedBox(
+          width: 10,
+        ),
         RatingBar(
             initialRating: movie.vote_average / 2,
             direction: Axis.horizontal,
@@ -365,15 +423,15 @@ class HeaderDetailMovie extends StatelessWidget {
           ),
           Positioned.fill(
               child: Align(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 15),
-                  child: Text(
-                    title,
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                alignment: Alignment.bottomCenter,
-              )),
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 15),
+              child: Text(
+                title,
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+            ),
+            alignment: Alignment.bottomCenter,
+          )),
           Positioned(
             top: 58,
             left: 10,

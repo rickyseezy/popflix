@@ -10,6 +10,7 @@ import 'package:movie_app/data/model/movieCredit/castItem/cast_item.dart';
 import 'package:movie_app/data/model/movieCredit/castItem/movie_credit_response.dart';
 import 'package:movie_app/data/model/person/person.dart';
 import 'package:movie_app/data/model/popularMovies/popular_movies_response.dart';
+import 'package:movie_app/data/model/similarMovie/similar_movie_response.dart';
 import 'package:movie_app/data/model/topRatedMovies/top_rated_movies_response.dart';
 import 'package:movie_app/data/model/trendingPersons/trending_persons_response.dart';
 import 'package:movie_app/data/model/upcomingMovies/upcoming_movies_response.dart';
@@ -30,7 +31,8 @@ part 'serializer.g.dart';
   TopRatedMoviesResponse,
   DetailMovieResponse,
   MovieCreditResponse,
-  CastItem
+  CastItem,
+  SimilarMovieResponse
 ])
 final Serializers serializers =
     (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

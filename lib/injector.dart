@@ -5,6 +5,7 @@ import 'package:movie_app/data/repository/movie_repository.dart';
 import 'package:movie_app/ui/homepage/genderTabBar/genre_cubit.dart';
 import 'package:movie_app/ui/homepage/genderTabBar/upcoming_movies_cubit.dart';
 import 'package:movie_app/ui/homepage/movie_credit/movie_credit_cubit.dart';
+import 'package:movie_app/ui/homepage/similar_movies/similar_movies_cubit.dart';
 import 'package:movie_app/ui/homepage/slider/slider_cubit.dart';
 import 'package:movie_app/ui/homepage/topRatedMovies/top_rated_movies_cubit.dart';
 import 'package:movie_app/ui/homepage/trendingPersons/trending_persons_cubit.dart';
@@ -64,6 +65,7 @@ abstract class Injector {
   @Register.factory(MovieDataSource)
   @Register.factory(MovieRepository)
   @Register.factory(MovieCreditCubit)
+  @Register.factory(SimilarMoviesCubit)
   void _configureMoviesModuleFactories();
 
 

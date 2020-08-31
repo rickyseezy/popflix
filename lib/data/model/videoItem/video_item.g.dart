@@ -33,9 +33,6 @@ class _$VideoItemSerializer implements StructuredSerializer<VideoItem> {
       serializers.serialize(object.id, specifiedType: const FullType(int)),
       'adult',
       serializers.serialize(object.adult, specifiedType: const FullType(bool)),
-      'backdrop_path',
-      serializers.serialize(object.backdrop_path,
-          specifiedType: const FullType(String)),
       'original_title',
       serializers.serialize(object.original_title,
           specifiedType: const FullType(String)),
@@ -56,7 +53,12 @@ class _$VideoItemSerializer implements StructuredSerializer<VideoItem> {
       serializers.serialize(object.release_date,
           specifiedType: const FullType(String)),
     ];
-
+    if (object.backdrop_path != null) {
+      result
+        ..add('backdrop_path')
+        ..add(serializers.serialize(object.backdrop_path,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -195,9 +197,6 @@ class _$VideoItem extends VideoItem {
     }
     if (adult == null) {
       throw new BuiltValueNullFieldError('VideoItem', 'adult');
-    }
-    if (backdrop_path == null) {
-      throw new BuiltValueNullFieldError('VideoItem', 'backdrop_path');
     }
     if (original_title == null) {
       throw new BuiltValueNullFieldError('VideoItem', 'original_title');

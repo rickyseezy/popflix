@@ -17,6 +17,7 @@ class _$Injector extends Injector {
     container.registerFactory((c) => MovieDataSource(c<Client>()));
     container.registerFactory((c) => MovieRepository(c<MovieDataSource>()));
     container.registerFactory((c) => MovieCreditCubit(c<MovieRepository>()));
+    container.registerFactory((c) => SimilarMoviesCubit(c<MovieRepository>()));
   }
 
   void _configureSliderModuleFactories() {

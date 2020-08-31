@@ -12,6 +12,7 @@ abstract class VideoItem implements Built<VideoItem, VideoItemBuilder> {
   String get poster_path;
   int get id;
   bool get adult;
+  @nullable
   String get backdrop_path;
   String get original_title;
   BuiltList<int> get genre_ids;

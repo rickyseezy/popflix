@@ -2,6 +2,7 @@ import 'package:movie_app/data/model/detailMovie/detail_movie.dart';
 import 'package:movie_app/data/model/genre/genre_response.dart';
 import 'package:movie_app/data/model/movieCredit/castItem/movie_credit_response.dart';
 import 'package:movie_app/data/model/popularMovies/popular_movies_response.dart';
+import 'package:movie_app/data/model/similarMovie/similar_movie_response.dart';
 import 'package:movie_app/data/model/topRatedMovies/top_rated_movies_response.dart';
 import 'package:movie_app/data/model/trendingPersons/trending_persons_response.dart';
 import 'package:movie_app/data/network/movie_data_source.dart';
@@ -13,6 +14,16 @@ class MovieRepository {
 
   Future<PopularMovieResponse> getPopularMovies() async {
     final response = await _movieDataSource.getPopularMovies();
+
+    if(response.results == null || response.results.isEmpty) {
+      throw EmptyMovieException();
+    }
+
+    return response;
+  }
+
+  Future<SimilarMovieResponse> getSimilarMovies(int id) async {
+    final response = await _movieDataSource.getSimilarMovies(id);
 
     if(response.results == null || response.results.isEmpty) {
       throw EmptyMovieException();

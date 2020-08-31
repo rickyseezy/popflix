@@ -4,6 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_app/data/model/detailMovie/detail_movie.dart';
 import 'package:movie_app/themes/themes.dart';
+import 'package:movie_app/ui/homepage/movie_credit/movie_credit_cubit.dart';
+import 'package:movie_app/ui/homepage/movie_credit/movie_credit_state.dart';
+import 'package:movie_app/widgets/avatar_list/avatar_list.dart';
 import 'package:movie_app/widgets/detail_movie/detail_movie_cubit.dart';
 import 'package:movie_app/widgets/detail_movie/detail_movie_state.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;
@@ -25,6 +28,7 @@ class _DetailMovieState extends State<DetailMovie> {
     // TODO: implement initState
     super.initState();
     _detailMovieCubit.loadMovie(widget.id);
+    //_movieCreditCubit.loadCast(widget.id);
   }
 
   @override
@@ -65,11 +69,23 @@ class _DetailMovieState extends State<DetailMovie> {
   }
 }
 
-class Content extends StatelessWidget {
+class Content extends StatefulWidget {
   final DetailMovieResponse movie;
 
   Content(this.movie);
 
+  @override
+  _ContentState createState() => _ContentState();
+}
+
+class _ContentState extends State<Content> {
+  final _movieCreditCubit = kiwi.KiwiContainer().resolve<MovieCreditCubit>();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _movieCreditCubit.loadCast(widget.movie.id);
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -90,7 +106,7 @@ class Content extends StatelessWidget {
               height: 15,
             ),
             Text(
-              movie.overview,
+              widget.movie.overview,
               style: TextStyle(fontSize: 11),
             ),
             SizedBox(
@@ -101,15 +117,15 @@ class Content extends StatelessWidget {
               children: <Widget>[
                 _buildItem(context,
                     title: 'BUDGET',
-                    value: movie.budget.toString(),
+                    value: widget.movie.budget.toString(),
                     isPrice: true),
                 _buildItem(context,
                     title: 'DURATION',
-                    value: '${movie.runtime.toString()}min',
+                    value: '${widget.movie.runtime.toString()}min',
                     isPrice: false),
                 _buildItem(context,
                     title: 'RELEASE DATE',
-                    value: movie.release_date,
+                    value: widget.movie.release_date,
                     isPrice: false)
               ],
             ),
@@ -127,15 +143,38 @@ class Content extends StatelessWidget {
             ),
             Text('CASTS',
                 style: TextStyle(color: Custom.titleColor, fontSize: 12)),
+            BlocProvider(
+              create: (_) => _movieCreditCubit,
+              child: BlocBuilder<MovieCreditCubit, MovieCreditState>(
+                builder: (context, state) {
+                  if(state is MovieCreditLoadingState){
+                    return _onLoading();
+                  }
+
+                  if(state is MovieCreditLoadedState){
+                    print('is loaded');
+                    return AvatarRoleList(state.cast.toList());
+                  }
+
+                  return _onLoading();
+                },
+              ),
+            )
           ],
         ),
       ),
     );
   }
 
+  Widget _onLoading() {
+    return Container(
+        height: MediaQuery.of(context).size.height * 0.13,
+      child: Center(child: CircularProgressIndicator(),),);
+  }
+
   List<Widget> _buildGenreTag() {
     TextStyle style = TextStyle(fontSize: 8);
-    return movie.genres.map((m) {
+    return widget.movie.genres.map((m) {
       return Container(
         decoration: BoxDecoration(
             border: Border.all(color: Colors.white),

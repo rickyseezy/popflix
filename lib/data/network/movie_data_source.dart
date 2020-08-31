@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:movie_app/data/model/detailMovie/detail_movie.dart';
 import 'package:movie_app/data/model/genre/genre_response.dart';
+import 'package:movie_app/data/model/movieCredit/castItem/movie_credit_response.dart';
 import 'package:movie_app/data/model/popularMovies/popular_movies_response.dart';
 import 'package:movie_app/data/model/topRatedMovies/top_rated_movies_response.dart';
 import 'package:movie_app/data/model/trendingPersons/trending_persons_response.dart';
@@ -72,6 +73,17 @@ class MovieDataSource {
     final response = await client.get('$_baseUrl/movie/$id?api_key=$API_KEY');
     final parsedResponse = DetailMovieResponse.fromJson(response.body);
 
+    if(response.statusCode == 200) {
+      return parsedResponse;
+    }
+
+    throw MovieErrorException;
+  }
+
+  Future<MovieCreditResponse> getMovieCredit(int id) async {
+    final response = await client.get('$_baseUrl/movie/$id/credits?api_key=$API_KEY');
+    final parsedResponse = MovieCreditResponse.fromJson(response.body);
+    print(parsedResponse);
     if(response.statusCode == 200) {
       return parsedResponse;
     }

@@ -7,15 +7,20 @@ part of 'serializer.dart';
 // **************************************************************************
 
 Serializers _$serializers = (new Serializers().toBuilder()
+      ..add(CastItem.serializer)
       ..add(DetailMovieResponse.serializer)
       ..add(GenreItem.serializer)
       ..add(GenreResponse.serializer)
+      ..add(MovieCreditResponse.serializer)
       ..add(Person.serializer)
       ..add(PopularMovieResponse.serializer)
       ..add(TopRatedMoviesResponse.serializer)
       ..add(TrendingPersonsResponse.serializer)
       ..add(UpcomingMoviesResponse.serializer)
       ..add(VideoItem.serializer)
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(CastItem)]),
+          () => new ListBuilder<CastItem>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(GenreItem)]),
           () => new ListBuilder<GenreItem>())

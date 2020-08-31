@@ -16,6 +16,7 @@ class _$Injector extends Injector {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => MovieDataSource(c<Client>()));
     container.registerFactory((c) => MovieRepository(c<MovieDataSource>()));
+    container.registerFactory((c) => MovieCreditCubit(c<MovieRepository>()));
   }
 
   void _configureSliderModuleFactories() {

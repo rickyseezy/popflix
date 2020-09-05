@@ -7,6 +7,9 @@ If you love movies, PopFlix is for you ! PopFlix is currently developed using Fl
 ## Introduction
 
 This is an open source project using the [BloC pattern](https://www.youtube.com/watch?v=RS36gBEp8OI&feature=emb_title) as presented by Google during the Google I/O '18 as the best pattern for flutter apps.
+##### Warning
+
+YoutubePlayer does not work on android emulator
 ## Getting Started
 
 Clone this repository

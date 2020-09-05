@@ -1,0 +1,9 @@
+export 'package:movie_app/cubits/detail_movie/detail_movie_cubit.dart';
+export 'package:movie_app/cubits/genre/genre_cubit.dart';
+export 'package:movie_app/cubits/movie_credit/movie_credit_cubit.dart';
+export 'package:movie_app/cubits/similar_movie/similar_movies_cubit.dart';
+export 'package:movie_app/cubits/slider/slider_cubit.dart';
+export 'package:movie_app/cubits/top_rated_movies/top_rated_movies_cubit.dart';
+export 'package:movie_app/cubits/trending_persons/trending_persons_cubit.dart';
+export 'package:movie_app/cubits/upcoming_movies/upcoming_movies_cubit.dart';
+export 'package:movie_app/cubits/youtube_player/youtube_player_cubit.dart';

@@ -1,0 +1,9 @@
+export 'package:movie_app/widgets/avatar_list/avatar_list.dart';
+export 'package:movie_app/widgets/genre_tab_bar/genre_tab_bar.dart';
+export 'package:movie_app/widgets/movies_list/movies_list.dart';
+export 'package:movie_app/widgets/slider/slider.dart';
+export 'package:movie_app/widgets/top_rated_movies/top_rated_movies.dart';
+export 'package:movie_app/widgets/trending_persons/trending_persons.dart';
+export 'package:movie_app/widgets/trending_persons/trending_persons.dart';
+export 'package:movie_app/widgets/detail_movie_content/detail_movie_content.dart';
+export 'package:movie_app/widgets/detail_movie_content/detail_movie_content.dart';

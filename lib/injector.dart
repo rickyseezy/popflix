@@ -2,14 +2,15 @@ import 'package:http/http.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:movie_app/data/network/movie_data_source.dart';
 import 'package:movie_app/data/repository/movie_repository.dart';
-import 'package:movie_app/ui/homepage/genderTabBar/genre_cubit.dart';
-import 'package:movie_app/ui/homepage/genderTabBar/upcoming_movies_cubit.dart';
-import 'package:movie_app/ui/homepage/movie_credit/movie_credit_cubit.dart';
-import 'package:movie_app/ui/homepage/similar_movies/similar_movies_cubit.dart';
-import 'package:movie_app/ui/homepage/slider/slider_cubit.dart';
-import 'package:movie_app/ui/homepage/topRatedMovies/top_rated_movies_cubit.dart';
-import 'package:movie_app/ui/homepage/trendingPersons/trending_persons_cubit.dart';
-import 'package:movie_app/widgets/detail_movie/detail_movie_cubit.dart';
+import 'package:movie_app/cubits/genre/genre_cubit.dart';
+import 'package:movie_app/cubits/slider/slider_cubit.dart';
+import 'package:movie_app/cubits/top_rated_movies/top_rated_movies_cubit.dart';
+import 'package:movie_app/cubits/trending_persons/trending_persons_cubit.dart';
+import 'package:movie_app/cubits/upcoming_movies/upcoming_movies_cubit.dart';
+import 'package:movie_app/cubits/detail_movie/detail_movie_cubit.dart';
+import 'package:movie_app/cubits/movie_credit/movie_credit_cubit.dart';
+import 'package:movie_app/cubits/similar_movie/similar_movies_cubit.dart';
+import 'package:movie_app/cubits/youtube_player/youtube_player_cubit.dart';
 part 'injector.g.dart';
 
 abstract class Injector {
@@ -22,12 +23,7 @@ abstract class Injector {
 
   void _configure() {
     _configureMoviesModule();
-    _configureSliderModule();
-    _configureGenreModule();
-    _configureUpcomingMoviesModule();
-    _configureTrendingPersonsModule();
-    _configureTopRatedMoviesModule();
-    _configureDetailMovieModule();
+    _configureCubitsModuleFactories();
   }
 
   void _configureMoviesModule() {
@@ -35,54 +31,21 @@ abstract class Injector {
     _configureMoviesModuleFactories();
   }
 
-  void _configureSliderModule() {
-    _configureSliderModuleFactories();
-  }
-
-  void _configureGenreModule() {
-    _configureGenreModuleFactories();
-  }
-
-  void _configureTrendingPersonsModule() {
-    _configureTrendingPersonsModuleFactories();
-  }
-
-  void _configureUpcomingMoviesModule() {
-    _configureUpcomingMoviesModuleFactories();
-  }
-
-  void _configureTopRatedMoviesModule() {
-    _configureTopRatedMoviesModuleFactories();
-  }
-
-  void _configureDetailMovieModule() {
-    _configureDetailMovieModuleFactories();
-  }
-
-  @Register.factory(DetailMovieCubit)
-  void _configureDetailMovieModuleFactories();
-
   @Register.factory(MovieDataSource)
   @Register.factory(MovieRepository)
-  @Register.factory(MovieCreditCubit)
-  @Register.factory(SimilarMoviesCubit)
   void _configureMoviesModuleFactories();
 
 
   @Register.factory(SliderCubit)
-  void _configureSliderModuleFactories();
-
   @Register.factory(GenreCubit)
-  void _configureGenreModuleFactories();
-
   @Register.factory(UpcomingMoviesCubit)
-  void _configureUpcomingMoviesModuleFactories();
-
   @Register.factory(TopRatedMoviesCubit)
-  void _configureTopRatedMoviesModuleFactories();
-
   @Register.factory(TrendingPersonsCubit)
-  void _configureTrendingPersonsModuleFactories();
+  @Register.factory(DetailMovieCubit)
+  @Register.factory(MovieCreditCubit)
+  @Register.factory(SimilarMoviesCubit)
+  @Register.factory(YoutubePlayerCubit)
+  void _configureCubitsModuleFactories();
 
   void _configureMoviesModuleInstance(){
     container.registerInstance(Client());

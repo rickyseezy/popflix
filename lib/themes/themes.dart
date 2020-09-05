@@ -16,13 +16,3 @@ ThemeData darkTheme = ThemeData(
     bodyText1: TextStyle(fontSize: 20.0, color: Colors.white)
   )
 );
-
-
-ThemeData lightTheme = ThemeData(
-    brightness: Brightness.light,
-    primaryColor: Colors.white,
-    accentColor: Custom.secondColor,
-    textTheme: TextTheme(
-        bodyText1: TextStyle(fontSize: 10.0, color: Colors.black)
-    )
-);

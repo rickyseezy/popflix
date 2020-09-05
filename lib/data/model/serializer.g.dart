@@ -12,6 +12,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GenreItem.serializer)
       ..add(GenreResponse.serializer)
       ..add(MovieCreditResponse.serializer)
+      ..add(MovieVideoItem.serializer)
+      ..add(MovieVideosResponse.serializer)
       ..add(Person.serializer)
       ..add(PopularMovieResponse.serializer)
       ..add(SimilarMovieResponse.serializer)
@@ -28,6 +30,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(GenreItem)]),
           () => new ListBuilder<GenreItem>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(MovieVideoItem)]),
+          () => new ListBuilder<MovieVideoItem>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Person)]),
           () => new ListBuilder<Person>())

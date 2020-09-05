@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route_annotations.dart';
 import 'package:movie_app/main.dart';
-import 'package:movie_app/ui/homepage/home_page.dart';
-import 'package:movie_app/widgets/detail_movie/detail_movie.dart';
+import 'package:movie_app/screens/detail_movie_screen.dart';
+
 
 @MaterialAutoRouter(routes: <AutoRoute>[
   MaterialRoute(page: HomeScreen, initial: true),
-  MaterialRoute(page: DetailMovie)
+  MaterialRoute(page: DetailMovieScreen)
 ])
 class $Router{}

@@ -15,9 +15,13 @@ YoutubePlayer does not work on android emulator
 Clone this repository
 
 #### Installation
-
+install dependencies
 ```bash
 flutter pub get
+```
+generate files
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
 ## Libraries

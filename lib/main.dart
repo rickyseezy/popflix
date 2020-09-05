@@ -3,9 +3,9 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/injector.dart';
 import 'package:movie_app/router/router.gr.dart';
+import 'package:movie_app/screens/screens.dart';
 import 'package:movie_app/themes/themes.dart';
 import 'package:movie_app/themes/themes.dart' as style;
-import 'package:movie_app/ui/homepage/home_page.dart';
 
 void main() {
   Injector.initKiwi();
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Popflix',
       theme: darkTheme,
       builder: ExtendedNavigator.builder<Router>(router: Router(),),
     );
@@ -30,7 +30,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: style.Custom.mainColor,
-      body: HomePage(),
+      body: HomePageScreen(),
       appBar: AppBar(
         elevation: 0,
         leading: Icon(EvaIcons.menu2Outline),

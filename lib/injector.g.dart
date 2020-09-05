@@ -13,29 +13,17 @@ class _$Injector extends Injector {
     container.registerFactory((c) => MovieRepository(c<MovieDataSource>()));
   }
 
-  void _configureSliderModuleFactories() {
+  void _configureCubitsModuleFactories() {
     final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => SliderCubit(c<MovieRepository>()));
-  }
-
-  void _configureGenreModuleFactories() {
-    final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => GenreCubit(c<MovieRepository>()));
-  }
-
-  void _configureUpcomingMoviesModuleFactories() {
-    final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => UpcomingMoviesCubit(c<MovieRepository>()));
-  }
-
-  void _configureTopRatedMoviesModuleFactories() {
-    final KiwiContainer container = KiwiContainer();
     container.registerFactory((c) => TopRatedMoviesCubit(c<MovieRepository>()));
-  }
-
-  void _configureTrendingPersonsModuleFactories() {
-    final KiwiContainer container = KiwiContainer();
     container
         .registerFactory((c) => TrendingPersonsCubit(c<MovieRepository>()));
+    container.registerFactory((c) => DetailMovieCubit(c<MovieRepository>()));
+    container.registerFactory((c) => MovieCreditCubit(c<MovieRepository>()));
+    container.registerFactory((c) => SimilarMoviesCubit(c<MovieRepository>()));
+    container.registerFactory((c) => YoutubePlayerCubit(c<MovieRepository>()));
   }
 }

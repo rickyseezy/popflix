@@ -10,14 +10,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
-import '../widgets/detail_video.dart';
+import '../screens/detail_movie_screen.dart';
 
 class Routes {
   static const String homeScreen = '/';
-  static const String detailVideo = '/detail-video';
+  static const String detailMovieScreen = '/detail-movie-screen';
   static const all = <String>{
     homeScreen,
-    detailVideo,
+    detailMovieScreen,
   };
 }
 
@@ -26,7 +26,7 @@ class Router extends RouterBase {
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
     RouteDef(Routes.homeScreen, page: HomeScreen),
-    RouteDef(Routes.detailVideo, page: DetailVideo),
+    RouteDef(Routes.detailMovieScreen, page: DetailMovieScreen),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -37,11 +37,22 @@ class Router extends RouterBase {
         settings: data,
       );
     },
-    DetailVideo: (data) {
+    DetailMovieScreen: (data) {
+      final args = data.getArgs<DetailMovieScreenArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => DetailVideo(),
+        builder: (context) => DetailMovieScreen(args.id),
         settings: data,
       );
     },
   };
+}
+
+/// ************************************************************************
+/// Arguments holder classes
+/// *************************************************************************
+
+/// DetailMovieScreen arguments holder class
+class DetailMovieScreenArguments {
+  final int id;
+  DetailMovieScreenArguments({@required this.id});
 }
